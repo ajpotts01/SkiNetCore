@@ -1,6 +1,4 @@
-API/bin/
-API/obj/
-Core/bin/
-Core/obj/
-Infrastructure/bin/
-Infrastructure/obj/
+bin
+obj
+*.db
+appsettings.json
