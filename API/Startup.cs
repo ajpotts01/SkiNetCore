@@ -9,6 +9,8 @@ namespace API
 {
     public class Startup
     {
+        const string CORS_POLICY_LABEL = "CorsPolicy";
+
         private readonly IConfiguration _config;
 
         public Startup(IConfiguration config)
@@ -20,6 +22,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             const string DEFAULT_CONN = "DefaultConnection";
+            const string LOCALHOST_URL = "https://localhost:4200";
             
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
@@ -27,6 +30,13 @@ namespace API
 
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
+            services.AddCors(
+                opt => opt.AddPolicy(
+                    CORS_POLICY_LABEL, pol => pol.AllowAnyHeader()
+                                                 .AllowAnyMethod()
+                                                 .WithOrigins(LOCALHOST_URL)
+                                )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +56,8 @@ namespace API
             app.UseRouting();
 
             app.UseStaticFiles();
+
+            app.UseCors(CORS_POLICY_LABEL);
 
             app.UseAuthorization();
 
