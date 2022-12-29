@@ -4,4 +4,6 @@ obj
 appsettings.json
 StudentAssets/
 skinet.db
+skinet.db-shm
+skinet.db-wal
 ssl/
