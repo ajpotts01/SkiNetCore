@@ -20,10 +20,11 @@ export class ShopService {
   private readonly API_QUERY_KEY_PAGESIZE: string = 'pageSize';
   private readonly API_QUERY_KEY_BRAND_ID: string = 'brandId';
   private readonly API_QUERY_KEY_TYPE_ID: string = 'typeId';
+  private readonly API_QUERY_KEY_SORT: string = 'sort';
 
   constructor(private http: HttpClient) { }
 
-  getProducts(brandId?: number, typeId?: number) {
+  getProducts(brandId?: number, typeId?: number, sort?: string) {
     let params = new HttpParams();
 
     params = params.append(this.API_QUERY_KEY_PAGESIZE, this.API_QUERY_DEFAULT_PAGESIZE.toString());
@@ -34,6 +35,10 @@ export class ShopService {
 
     if (typeId) {
       params = params.append(this.API_QUERY_KEY_TYPE_ID, typeId.toString());
+    }
+
+    if (sort) {
+      params = params.append(this.API_QUERY_KEY_SORT, sort);
     }
 
     // e.g. api/products?pageSize=50

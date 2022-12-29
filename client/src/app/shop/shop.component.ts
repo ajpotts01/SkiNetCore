@@ -13,8 +13,14 @@ export class ShopComponent implements OnInit {
   products: IProduct[];
   brands: IBrand[];
   productTypes: IProductType[];
-  selectedBrandId: number;
-  selectedTypeId: number;
+  selectedBrandId: number = 0;
+  selectedTypeId: number = 0;
+  selectedSort: string = 'name';
+  sortOptions = [
+    { name: 'Alphabetical', value: 'name' },
+    { name: 'Price: Low to High', value: 'priceAsc'},
+    { name: 'Price: High to Low', value: 'priceDesc' }
+  ];
 
   constructor(private shopService: ShopService) { }
 
@@ -28,7 +34,7 @@ export class ShopComponent implements OnInit {
   // this is because products is paginated data e.g. IPagination with encapsulated data field
   // The others are just plain arrays
   getProducts() {
-    this.shopService.getProducts(this.selectedBrandId, this.selectedTypeId).subscribe({
+    this.shopService.getProducts(this.selectedBrandId, this.selectedTypeId, this.selectedSort).subscribe({
       next: (response) => { this.products = response.data; console.log('Shop load - products: success') },
       error: (error) => { console.log('Shop load - products: error'); console.log(error) }
     });
@@ -57,6 +63,12 @@ export class ShopComponent implements OnInit {
   onTypeSelected(typeId: number) {
     this.selectedTypeId = typeId;
 
+    this.getProducts();
+  }
+
+  onSortSelected(sort: string) {
+    this.selectedSort = sort;
+    
     this.getProducts();
   }
 
