@@ -4,6 +4,7 @@ import { map } from 'rxjs';
 import { IBrand } from '../shared/models/brand';
 import { IPagination } from '../shared/models/pagination';
 import { IProductType } from '../shared/models/product-type';
+import { ShopParams } from '../shared/models/shop-params';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class ShopService {
   private readonly API_QUERY_PAGESIZE_50: string = 'pageSize=50'; // placeholder until params are added
 
   private readonly API_QUERY_DEFAULT_PAGESIZE: number = 50;
+  private readonly API_QUERY_KEY_PAGENUMBER: string = 'pageIndex';
   private readonly API_QUERY_KEY_PAGESIZE: string = 'pageSize';
   private readonly API_QUERY_KEY_BRAND_ID: string = 'brandId';
   private readonly API_QUERY_KEY_TYPE_ID: string = 'typeId';
@@ -24,21 +26,23 @@ export class ShopService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(brandId?: number, typeId?: number, sort?: string) {
+  getProducts(shopParams: ShopParams) {
     let params = new HttpParams();
 
-    params = params.append(this.API_QUERY_KEY_PAGESIZE, this.API_QUERY_DEFAULT_PAGESIZE.toString());
+    //params = params.append(this.API_QUERY_KEY_PAGESIZE, this.API_QUERY_DEFAULT_PAGESIZE.toString());
 
-    if (brandId) {
-      params = params.append(this.API_QUERY_KEY_BRAND_ID, brandId.toString());
+    // "Always on" params first
+    params = params.append(this.API_QUERY_KEY_SORT, shopParams.sort);
+    params = params.append(this.API_QUERY_KEY_PAGENUMBER, shopParams.pageNumber.toString());
+    params = params.append(this.API_QUERY_KEY_PAGESIZE, shopParams.pageSize.toString());
+
+
+    if (shopParams.brandId && shopParams.brandId !== 0) {
+      params = params.append(this.API_QUERY_KEY_BRAND_ID, shopParams.brandId.toString());
     }
 
-    if (typeId) {
-      params = params.append(this.API_QUERY_KEY_TYPE_ID, typeId.toString());
-    }
-
-    if (sort) {
-      params = params.append(this.API_QUERY_KEY_SORT, sort);
+    if (shopParams.typeId && shopParams.typeId !== 0) {
+      params = params.append(this.API_QUERY_KEY_TYPE_ID, shopParams.typeId.toString());
     }
 
     // e.g. api/products?pageSize=50
