@@ -22,6 +22,7 @@ export class ShopService {
   private readonly API_QUERY_KEY_PAGESIZE: string = 'pageSize';
   private readonly API_QUERY_KEY_BRAND_ID: string = 'brandId';
   private readonly API_QUERY_KEY_TYPE_ID: string = 'typeId';
+  private readonly API_QUERY_KEY_SEARCH: string = 'search';
   private readonly API_QUERY_KEY_SORT: string = 'sort';
 
   constructor(private http: HttpClient) { }
@@ -43,6 +44,10 @@ export class ShopService {
 
     if (shopParams.typeId && shopParams.typeId !== 0) {
       params = params.append(this.API_QUERY_KEY_TYPE_ID, shopParams.typeId.toString());
+    }
+
+    if (shopParams.searchTerms) {
+      params = params.append(this.API_QUERY_KEY_SEARCH, shopParams.searchTerms);
     }
 
     // e.g. api/products?pageSize=50

@@ -36,10 +36,15 @@
                 </app-paging-header>
 
                 <div class="d-flex flex-row align-items-center flex-wrap mt-2">
-                    <input class="form-control me-2" style="width: 300px; padding: 0.2rem 0.5rem;" placeholder="Search"
-                        type="text">
-                    <button class="btn btn-outline-primary my-2 me-2" style="padding: 0.2rem 0.5rem;">Search</button>
-                    <button class="btn btn-outline-success my-2" style="padding: 0.2rem 0.5rem;">Reset</button>
+                    <input class="form-control me-2" style="width: 300px; padding: 0.2rem 0.5rem;" 
+                        #search
+                        placeholder="Search"
+                        type="text"
+                        (keyup.enter)="onSearch()">
+                    <button class="btn btn-outline-primary my-2 me-2" style="padding: 0.2rem 0.5rem;"
+                            (click)="onSearch()">Search</button>
+                    <button class="btn btn-outline-success my-2" style="padding: 0.2rem 0.5rem;"
+                            (click)="onReset()">Reset</button>
                 </div>
             </div>
 
