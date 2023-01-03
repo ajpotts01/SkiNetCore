@@ -12,7 +12,7 @@ import { ShopService } from './shop.service';
 })
 export class ShopComponent implements OnInit {
   // Decorators
-  @ViewChild('search', { static: true }) searchTerms: ElementRef
+  @ViewChild('search', { static: false }) searchTerms: ElementRef
   
   // Data
   products: IProduct[];
