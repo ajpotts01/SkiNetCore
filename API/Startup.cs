@@ -30,7 +30,7 @@ namespace API
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_config.GetConnectionString(DEFAULT_CONN)));
 
             // Redis is designed to be shared/used amongst callers. Also thread-safe.
-            services.AddSingleton<ConnectionMultiplexer>(c => {
+            services.AddSingleton<IConnectionMultiplexer>(c => {
                 var configuration = ConfigurationOptions.Parse(_config.GetConnectionString("Redis"), true);
 
                 return ConnectionMultiplexer.Connect(configuration);
