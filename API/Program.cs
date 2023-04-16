@@ -1,10 +1,39 @@
-using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
+using API.Extensions;
+using API.Middleware;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+builder.Services.AddApplicationServices(builder.Configuration);
+
+// Doesn't exist in my version of the project so far
+//builder.Services.AddIdentityServices(builder.Configuration);
+
+builder.Services.AddSwaggerDocumentation();
+
+var app = builder.Build();
+
+// Configure request pipeline (middleware)
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseSwaggerDocumentation();                
+
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseStaticFiles();
+
+app.UseCors(ApplicationServicesExtensions.CORS_POLICY_LABEL);
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 namespace API
 {
