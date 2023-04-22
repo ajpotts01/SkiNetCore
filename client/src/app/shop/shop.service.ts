@@ -2,10 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IBrand } from '../shared/models/brand';
-import { IPagination } from '../shared/models/pagination';
-import { IProduct } from '../shared/models/product';
-import { IProductType } from '../shared/models/product-type';
+import { Brand } from '../shared/models/brand';
+import { Pagination } from '../shared/models/pagination';
+import { Product } from '../shared/models/product';
+import { ProductType } from '../shared/models/product-type';
 import { ShopParams } from '../shared/models/shop-params';
 
 @Injectable({
@@ -38,7 +38,7 @@ export class ShopService {
     }
 
     // e.g. api/products?pageSize=50
-    return this.http.get<IPagination>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}`, { observe: 'response', params })
+    return this.http.get<Pagination>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}`, { observe: 'response', params })
       .pipe(
         map(response => {
           return response.body;
@@ -47,16 +47,16 @@ export class ShopService {
   }
 
   getProduct(id: number) {
-    return this.http.get<IProduct>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}/${id}`);
+    return this.http.get<Product>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}/${id}`);
   }
 
   getProductTypes() {
     // e.g. api/products/types
-    return this.http.get<IProductType[]>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}/${environment.API_ENDPOINT_PRODUCTS_TYPES}`)
+    return this.http.get<ProductType[]>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}/${environment.API_ENDPOINT_PRODUCTS_TYPES}`)
   }
 
   getBrands() {
     // e.g. api/products/brands
-    return this.http.get<IBrand[]>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}/${environment.API_ENDPOINT_PRODUCTS_BRANDS}`);
+    return this.http.get<Brand[]>(`${environment.API_URL_BASE}/${environment.API_ENDPOINT_PRODUCTS}/${environment.API_ENDPOINT_PRODUCTS_BRANDS}`);
   }
 }

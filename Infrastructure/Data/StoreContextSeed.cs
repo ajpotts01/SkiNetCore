@@ -1,12 +1,6 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Core.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
@@ -27,15 +21,14 @@ namespace Infrastructure.Data
 
             try
             {
-                // TODO: Figure out how to pass DbSets around and reduce code here even further
-                if (!context.ProductBrands.Any())         
-                    LoadData<ProductBrand>(BRANDS_JSON_PATH).ForEach(item => context.ProductBrands.Add(item));
-                
+                if (!context.ProductBrands.Any())
+                    context.ProductBrands.AddRange(LoadData<ProductBrand>(BRANDS_JSON_PATH));
+
                 if (!context.ProductTypes.Any())
-                    LoadData<ProductType>(TYPES_JSON_PATH).ForEach(item => context.ProductTypes.Add(item));
+                    context.ProductTypes.AddRange(LoadData<ProductType>(TYPES_JSON_PATH));
                 
                 if (!context.Products.Any())
-                    LoadData<Product>(PRODUCTS_JSON_PATH).ForEach(item => context.Products.Add(item));
+                    context.Products.AddRange(LoadData<Product>(PRODUCTS_JSON_PATH));
                 
                 await context.SaveChangesAsync();
             }
